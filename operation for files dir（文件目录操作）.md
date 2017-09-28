@@ -10,9 +10,9 @@ import os
 def getListFiles(path):
 
     ret = []  #先初始化一个空的列表；
-    
+    
     for root, dirs, files in os.walk(path):# 将os.walk在元素中提取的值，分别放到root（根目录），
-                                            # dirs（目录名），files（文件名）中，注意：这里将入口参数path作为了root。
+    # dirs（目录名），files（文件名）中，注意：这里将入口参数path作为了root。
     
         for filespath in files:
         
