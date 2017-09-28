@@ -1,0 +1,18 @@
+这篇文章主要介绍了Python跳出循环语句continue与break的区别,本文用实例来说明它们之间的区别。
+虽然在Python中的for循环与其它语言不大一样，但跳出循环还是与大多数语言一样，可以使用关键字continue跳出本次循环或者break跳出整个for循环。
+代码如下：
+
+# break
+
+for x in range(10):
+    if x == 5:
+        break
+    print(x)
+    
+输出是0 1 2 3 4
+
+for x in range(10):
+    if x == 5:
+        continue
+    print(x)
+输出是0 1 2 3 4 6 7 8 9
