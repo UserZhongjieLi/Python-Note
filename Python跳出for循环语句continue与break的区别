@@ -7,8 +7,7 @@
 for x in range(10):
     if x == 5:
         break
-    print(x)
-    
+    print(x)    
 输出是0 1 2 3 4
 
 for x in range(10):
