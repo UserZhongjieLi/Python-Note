@@ -29,5 +29,5 @@ if __name__ == '__main__':
         print(each)
         
 # 获取当前目录下所有的子目录
-sub_dirs = [x[0] for x in os.walk(INPUT_DATA)]  # 注意这里的x[0]必须加上，而且不同的数字功能不同，这个可以得到INPUT_DATA文件下的子文件夹，
-                                                #也就是子目录但是并不会得到子文件夹下的所有文件。
+sub_dirs = [x[0] for x in os.walk(INPUT_DATA)]  # 注意这里的x[0]必须加上，而且不同的数字功能不同，这个可以得到
+                                                #INPUT_DATA文件下的子文件夹，也就是子目录但是并不会得到子文件夹下的所有文件。
