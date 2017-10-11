@@ -1,0 +1,12 @@
+# 载入训练数据
+def loadTrainData():  
+    l = []  #先设置一个空的数组；
+    with open('train.csv') as file:  
+         lines = csv.reader(file)  
+         for line in lines:  
+             l.append(line) #42001*785  
+    l.remove(l[0])  
+    l = array(l)  
+    label = l[:, 0]  
+    data = l[:, 1:]  
+    return nomalizing(toInt(data)), toInt(label)
