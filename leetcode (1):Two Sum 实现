@@ -60,3 +60,13 @@ print(Solution.twoSum(nums,target))
 五、处理大数据的时候能不用两层for循环嵌套尽量就不用，因为数量一多，复杂度就会呈指数式增长，运行时间就会特别长；
 六、利用列表解析的方法将列表中的str型数据转换成int型：numbers = [ int(x) for x in numbers ]
 七、进行条件判断的时候要注意：与运算与c语言不通，比如：if (sum == target)&(i!=j):，这里只有一个&，而不是两个；
+
+下方是我写的一个不成熟的程序，一遇到大数据就完蛋了，因为复杂度太大超时了。在jupyter可直接运行：
+nums=[2,5,5,11]
+target=10
+for i in range(len(nums)):
+    for j in range(len(nums)):
+        sum= nums[i]+nums[j]
+        if (sum == target)&(i!=j):
+            lst=[i,j]
+print(lst)
