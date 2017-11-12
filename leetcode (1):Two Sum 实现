@@ -7,7 +7,8 @@ Example:
   Because nums[0] + nums[1] = 2 + 7 = 9,
   return [0, 1].
 
-下方为代码：
+下方为答案代码：
+#############################  solutions  start  ##############################
 class Solution:
     def twoSum(self, nums, target):
         if len(nums) <= 1:
@@ -18,8 +19,9 @@ class Solution:
                 return [buff_dict[nums[i]], i]
             else:
                 buff_dict[target - nums[i]] = i
-                
-在jupyter上的通过键盘输入实现：
+#############################  solutions  end  ##############################  
+
+###################  在jupyter上的通过键盘输入实现上述功能： start#######################
 class Solution:
     def twoSum(nums, target): # 注意：这里把self参数去掉了；
         if len(nums) <= 1:
@@ -41,3 +43,20 @@ while True:
     except:
         break
 print(Solution.twoSum(nums,target))
+###################  在jupyter上的通过键盘输入实现上述功能： end #######################
+
+解题思路：先从所给数据列表中提取元素，然后我们知道这个列表中一定存在两个数求和等于target，故我们可以将target与该元素做差，并把
+这个元素的下标存储起来，这时候就可以用字典了，用key存储差值，用value来存储这个元素所在的下标，然后每循环一次就检查一下我本次提
+取的元素是否就是以前出现过的某个元素所差的数值，然后这两个数值正好可以匹配起来，使得和为target。简而言之就是每次把所差的存起来，直
+到等到那个有缘人出现，则配对成功。
+
+学到的知识点：
+一、break语句跳出的是离他最近的for或者while循环，而不是整个循环嵌套，与if语句无关；
+二、循环访问字典的时候其实是通过key的，比如这里的 if nums[i] in buff_dict：语句，其中nums[i]代表的就是key，即看看
+    字典buff_dict中有没有这个key；而且访问字典中的元素的时候用的格式是：dict_name[key];
+三、向字典中添加元素的时候dict_name[key]=value即可实现字典元素的添加；
+四、对于字典的新理解：个人感觉它就像是一个存储器，存储了一对对的密切相关的量，这里就利用了把自己所差的数值存成key，把
+    自己的下标存成value，直到等到有缘人的出现，没配成对的就在这里存着，等着自己的有缘的人的出现；
+五、处理大数据的时候能不用两层for循环嵌套尽量就不用，因为数量一多，复杂度就会呈指数式增长，运行时间就会特别长；
+六、利用列表解析的方法将列表中的str型数据转换成int型：numbers = [ int(x) for x in numbers ]
+七、进行条件判断的时候要注意：与运算与c语言不通，比如：if (sum == target)&(i!=j):，这里只有一个&，而不是两个；
