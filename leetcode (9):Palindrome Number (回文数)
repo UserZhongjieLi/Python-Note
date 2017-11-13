@@ -7,29 +7,56 @@ Could negative integers be palindromes? (ie, -1)
 
 If you are thinking of converting the integer to string, note the restriction of using extra space.
 
-You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know that the reversed integer might overflow. How would you handle such case?
+You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know
+that the reversed integer might overflow. How would you handle such case?
 
 There is a more generic way of solving this problem.
 
 下面是大牛的解决方案：
 class Solution:
     def isPalindrome(self, x):
-        """
-        :type x: int
-        :rtype: bool
-        """
-        if x < 0:
+        if x < 0:                  # 回文数不可能为负数，所以如果为负数，返回False
             return False
 
-        r = 1
-        while x / r >= 10:
+        r = 1                      # 给r初始值；
+        while x / r >= 10:#循环就是为了找出不超过x的最大单位，如10、1000、10000等等；
             r *= 10
 
         while r > 1:
-            left, x =divmod(x, r)
-            x, right = divmod(x, 10)
-            if left != right:
+            left, x = divmod(x, r) # 意思是获取x/r的商和余数，其中left获取商，x获取余数，实质上left就是最左边的数字，我们
+                                   # 需要再获取最右边的数字，看看他们是否相等；
+            x, right = divmod(x, 10)  # 而x/10所得的余数就是x最右边的数，也就是赋给right的值；
+            if left != right:      # 如果左右两个数字不相等，那么他们必然不是回文数；
                 return False
-            r //= 100
+            r //= 100              # 这里用到了地板除，若除完是正值，则最终结果就是去掉小数点之后的值，若是负的，则就是
+                                   # 离0的负整数。例如：9//2 = 4 and 9.0//2.0 = 4.0, -11//3 = -4, -11.0//3 = -4.0,因为
+                                   # x每循环完成一次就被去掉了首位和末位两个数，相当于右移了2位，所以相应的r值要缩小一百倍；
 
         return True
+        
+下面是我的解决方案：
+class Solution:
+    def isPalindrome(self, x):
+
+        if x < 0:          #如果是负数，立即判断其不是回文数；
+            return False
+        else:
+            x_reverse = int(str(x)[::-1])
+            if x==x_reverse:
+                return True
+            else:
+                return False
+ 注意：其实我的方案是不大准确的，因为题目中指明“Do this without extra space.”，我其实新建了一个空间，将x转换成str类型然后将其
+ 逆序输出，再将得到的str类型数据转换回int型，然后判断两者是否相等。若两者相等就是回文数，两者不相等就不是回文数。而上面大牛没有
+ 新建空间，而是用了数学的方式分别取出了输入数据的首末两位，比较完之后得到的x首末位置的数据被去掉，非常的巧妙。大牛巧妙的利用了
+ divmod()这个内建函数获得商和余数，进而利用商和余数去掉了首末两个数字。
+ 
+ 学到的知识：
+ 一、divmod(a, b)  函数把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)，参数说明：a: 数字 b: 数字。
+    例子如下：>>>divmod(7, 2)
+    (3, 1)
+    >>> divmod(8, 2)
+    (4, 0)
+ 二、// 地板除：这里用到了地板除，若除完是正值，则最终结果就是去掉小数点之后的值，若是负的，则就是离0的负整数。
+    例如：9//2 = 4 and 9.0//2.0 = 4.0, -11//3 = -4, -11.0//3 = -4.0
+ 三、就是利用了“曲线救国”的策略，通过int与str的转换实现了自己的目的，前面的知识没有白学。
