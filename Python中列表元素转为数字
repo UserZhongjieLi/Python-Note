@@ -1,0 +1,26 @@
+有一个数字字符的列表：
+
+numbers = ['1', '5', '10', '8']
+想要把每个元素转换为数字：
+
+numbers = [1, 5, 10, 8]
+用一个循环来解决：
+
+new_numbers = [];
+for n in numbers:
+    new_numbers.append(int(n));
+numbers = new_numbers;
+有没有更简单的语句可以做到呢？
+
+1.
+
+numbers = [ int(x) for x in numbers ]
+2. Python2.x,可以使用map函数
+
+numbers = map(int, numbers)
+如果是3.x,map返回的是map对象，当然也可以转换为List:
+
+numbers = list(map(int, numbers))
+3.还有一种比较复杂点：
+
+for i, v in enumerate(numbers): numbers[i] = int(v)
