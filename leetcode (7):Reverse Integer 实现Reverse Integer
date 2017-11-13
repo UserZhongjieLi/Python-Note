@@ -16,3 +16,34 @@ Note:
 Assume we are dealing with an environment which could only hold integers within the 32-bit signed integer range.
 For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
 
+我的解决方案代码如下：
+class Solution:
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        if (x<-2147483647)|(x>2147483648):  
+            return 0   
+        elif x==0:  
+            return 0  
+        else:  
+            if x>0:  
+                flag=True  
+            else:  
+                flag=False   
+                x*=-1  
+            x_list=list(str(x))  
+            while x_list[-1]=='0':  
+                x_list.pop()  
+            tmp=''.join(x_list[::-1])  
+            if flag:  
+                m= int(tmp)   
+            else:  
+                m= int('-'+tmp)
+            if (m<-2147483647)|(m>2147483648): # 判断是否超出32位寄存器所能表示的范围，溢出则fanhui
+                return 0
+            else:
+                return m
+  学到的知识：
+  一、32位机int取值范围是-2^31~2^31-1，
