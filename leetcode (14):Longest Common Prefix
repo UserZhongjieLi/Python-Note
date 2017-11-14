@@ -1,7 +1,42 @@
 Write a function to find the longest common prefix string amongst an array of strings.
 题目的大致意思是：给出字符串数组，查找这个数组中所有字符串的最长公共前缀。
 
-其中一个大牛的解决方案（运行时间76ms）：
+
+    在说明大牛的思路之前，先学习一个python的内建函数，就是zip（）函数：
+ zip() 函数
+
+描述
+zip() 函数用于将可迭代的对象作为参数，将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的列表。
+如果各个迭代器的元素个数不一致，则返回列表长度与最短的对象相同，利用 * 号操作符，可以将元组解压为列表。
+
+语法
+zip([iterable, ...])
+
+参数说明：
+iterabl -- 一个或多个迭代器;
+
+返回值
+返回元组列表。
+
+实例
+以下实例展示了 zip 的使用方法：
+>>>a = [1,2,3]
+>>> b = [4,5,6]
+>>> c = [4,5,6,7,8]
+>>> zipped = zip(a,b)     # 打包为元组的列表
+[(1, 4), (2, 5), (3, 6)]
+>>> zip(a,c)              # 元素个数与最短的列表一致
+[(1, 4), (2, 5), (3, 6)]
+>>> zip(*zipped)          # 与 zip 相反，可理解为解压，返回二维矩阵式
+[(1, 2, 3), (4, 5, 6)]
+通过上面的例子我们可以发现利用* 号操作符表面上看是解压，但其实际的作用是将列表中每一个可迭代对象的对应的元素放在了元组中，最终产生
+元组的个数等于这些可迭代对象所包含的元素个数最少的那个。比如上面的zipped = [(1, 4), (2, 5), (3, 6)]，每个可迭代对象中最少含有
+两个元素，故 zip(*zipped) =>[(1, 2, 3), (4, 5, 6)],发现里面共有两个元组。
+
+仔细想想我们正好可以利用zip函数的特性，将
+
+
+大牛1的解决方案（运行时间76ms）：
 class Solution:
     def longestCommonPrefix(self, strs):
         """
@@ -16,7 +51,7 @@ class Solution:
                 return strs[0][:i]
         else:
             return min(strs)
-另一个大牛的解决方案：
+大牛2的解决方案：
 class Solution:
     def longestCommonPrefix(self, strs):
         """
@@ -24,8 +59,29 @@ class Solution:
         :rtype: str
         """
         sz, ret = zip(*strs), ""
-        # looping corrected based on @StefanPochmann's comment below
         for c in sz:
             if len(set(c)) > 1: break
             ret += c[0]
         return ret
+        
+大牛3的解决方案(Runtime: 56 ms)：
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        prefix = ''
+        i = 0
+        while True:
+            try:
+                tmp = strs[0][i]  # 先从最开始的字符串提取元素，存在tmp中（Template模板的简写），利用偏移量访问可迭代对象的元素；
+                for item in strs: # 开始挨个验证每个项的第i个元素是否与模板一致，不一致直接返回现有的prefix；
+                    if item[i] != tmp:
+                        return prefix
+            except: #out of index range，表明遍历最短字符串完毕，因为当i超出最小范围的时候，try中的语句就会报错，转而执行except语句
+                return prefix     # 这个try...except语句最大的好处是如果try中出现异常，程序仍然能正常执行；
+            prefix += tmp         # 这里巧妙的运用了字符串的加运算，直接实现了字符串的拼接，好方法；
+            i += 1                # 该项完成比较，进行下一项；
+        return prefix
+
