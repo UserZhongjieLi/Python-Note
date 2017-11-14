@@ -1,0 +1,31 @@
+Write a function to find the longest common prefix string amongst an array of strings.
+题目的大致意思是：给出字符串数组，查找这个数组中所有字符串的最长公共前缀。
+
+其中一个大牛的解决方案（运行时间76ms）：
+class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        if not strs:
+            return ""
+            
+        for i, letter_group in enumerate(zip(*strs)):
+            if len(set(letter_group)) > 1:
+                return strs[0][:i]
+        else:
+            return min(strs)
+另一个大牛的解决方案：
+class Solution:
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+        sz, ret = zip(*strs), ""
+        # looping corrected based on @StefanPochmann's comment below
+        for c in sz:
+            if len(set(c)) > 1: break
+            ret += c[0]
+        return ret
