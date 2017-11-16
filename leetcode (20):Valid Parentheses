@@ -2,30 +2,6 @@ Given a string containing just the characters '(', ')', '{', '}', '[' and ']', d
 
 The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
 
-思路
-
-1、使用栈（先进后出）
-2、如果遇到左边符号{，[，(，则将其对应的右边符号}，]，)入栈，如果遇到右边符号，则判断栈顶元素是否匹配，不匹配则返回False
-3、最后栈空，则完全闭合匹配，返回True
-
-解决方案一：
-class Solution:
-    def isValid(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        stack = []
-        dict = {"]":"[", "}":"{", ")":"("}
-        for char in s:
-            if char in dict.values():
-                stack.append(char)
-            elif char in dict.keys():
-                if stack == [] or dict[char] != stack.pop():
-                    return False
-            else:
-                return False
-        return stack == []
 
 首先补充一部分关于栈（stack）的数据结构的知识点，来源于官方教程（注：官方教程是最好的学习python的资料）
 网址：https://docs.python.org/3.1/tutorial/datastructures.html
@@ -50,3 +26,43 @@ class Solution:
     5
     >>> stack
     [3, 4]
+对上面的知识点简而言之就是利用list实现堆栈的作用，即“后进先出，先进后出”。添加元素使用list.append(),弹出元素使用list.pop()。
+
+解题思路：
+
+1、使用栈（先进后出）
+2、如果遇到左边符号{，[，(，则将其对应的右边符号}，]，)入栈，如果遇到右边符号，则判断栈顶元素是否匹配，不匹配则返回False
+（之所以让左边的括号入栈，是因为大部分情况都是先写左边的括号，取出左边的存在栈里，等待配对）
+3、最后栈空，则完全闭合匹配，返回True
+
+解决方案一：
+class Solution:
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        stack = []
+        dict = {"]":"[", "}":"{", ")":"("} # 这里又利用了字典将有关系确无法用表达式表达出来的用字典表示了，前面leetcode(1)中也利用了这个思维；
+                                           # 注意：这里特意用了将右边括号作为key，而将左边括号作为value，如果key出现但是栈是空的或者即使不是
+                                           # 空的也没有相应的括号和它配对，那肯定就是不符合要求的。
+        for char in s:                     # 开始顺序取出所给字符串的每个元素
+            if char in dict.values():      # （括号是左边的）这个操作可以取出字典的全部value，它是一个可迭代的对象，目的是先把左边括号放在栈里，
+                                           # 等待配对；
+                stack.append(char)         # 如果见到左边的括号，入栈；
+            elif char in dict.keys():      # （括号是右边的）见到右边的括号的前提下：
+                if stack == [] or dict[char] != stack.pop():  #如果堆栈是空的或者与栈中弹出来的不相符，那肯定是不符要求的；
+                    return False
+            else:                          # 既不是左边的括号也不是右边的括号，当然返回False
+                return False
+        return stack == []                 # 最后看看堆栈是不是空的，如果是空的，证明全部配对成功，否则就还有没配对成功的
+
+学到的知识点：
+一、这里再次强调了一个思想：只要两者有一一对应关系但又无法用表达式表达出来的，我们就用字典的key和value来解决，这个思想特别好用，求两个
+    和为给定值的那个leetcode(1)也使用了这个值。
+二、在运用字典存储两个有一一对应关系的量的时候，谁做key谁做value也是一门学问，因为通过dict通过key可以直接提取来对应的value，但是想通过
+    value找对应的key就不是那么方便了；
+三、就是堆栈思想的应用，这里巧妙的运用了堆栈的思想，好比男女配对，按照顺序把未配对的存起来，配成对的pop出去，真的是非常奇妙的想法；在堆栈中
+    pop和append就是一对儿；
+四、另一个就是字典的操作知识，dict.keys()获得所有的键，dict.values()获得所有的值。注意这两者返回的都是可迭代对象，因此，就可以使用for
+    循环做批量操作啦；另外就是想判定其是否存在某个键值对，可以使用has_key()或 in 、 not in 操作符。
