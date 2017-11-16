@@ -2,6 +2,12 @@ Given a string containing just the characters '(', ')', '{', '}', '[' and ']', d
 
 The brackets must close in the correct order, "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
 
+思路
+
+1、使用栈（先进后出）
+2、如果遇到左边符号{，[，(，则将其对应的右边符号}，]，)入栈，如果遇到右边符号，则判断栈顶元素是否匹配，不匹配则返回False
+3、最后栈空，则完全闭合匹配，返回True
+
 解决方案一：
 class Solution:
     def isValid(self, s):
