@@ -32,19 +32,22 @@ class LinkedList:
   
     def append(self, data):       # append方法表示增加元素到链表，这和insert方法不同，前者使新增加的元素成为链表中第一个节点，
                                   # 而后者是根据索引值来判断插入到链表的哪个位置
-        node = Node(data)
-        if self.head is None:
+        node = Node(data)	  #先将输入数据节点化，既然要新增加节点，首先把Node类实例化得到一个node对象(先将输入数据节点化再谈别的)
+				  #这里有两种情况需要考虑，一是链表是一个空链表时怎样append一个节点；二是当链表不是空链表时又怎样append
+				  #一个节点？
+        if self.head is None:	  #为True时，把链表的head和tail都指向了node
             self.head = node
             self.tail = node
-        else:
-            self.tail.next = node
-            self.tail = node
+        else:			  #为False时说明此时的链表已经不是空的了，再增加一个节点时head已经指向了第一个节点，所以不为None
+				  #链表不为空，下面也就没有head的事了。增加第二个节点的操作需要分两步完成：
+            self.tail.next = node # 第一步：把上一个节点的next指针指向当前node
+            self.tail = node	  # 第二步：把tail移动到当前node
   
     def iter(self):
-        if not self.head:
+        if not self.head:	  #当是遍历一个空链表时，self.head为none，所以not none就是True，即为空则返回None，可省略；
             return
-        cur = self.head
-        yield cur.data
+        cur = self.head		  #如果不是空链表就让一个局部变量cur指向head,
+        yield cur.data		  #并把head的data属性yield出来；
         while cur.next:
             cur = cur.next
             yield cur.data
