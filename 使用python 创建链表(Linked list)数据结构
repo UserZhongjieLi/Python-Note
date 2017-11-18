@@ -73,29 +73,31 @@ class LinkedList:
 				 # 此时插入的节点便成为了新的tail节点，故别忘了将该节点赋给tail。
             self.tail = node
   
-    def remove(self, idx):
+    def remove(self, idx):       # remove方法接收一个idx参数，表示要删除节点的索引，此方法要考虑以下几种情况：
+    				 #
         cur = self.head
         cur_idx = 0
-        if self.head is None:  # 空链表时
+        if self.head is None:    # 1、空链表时，直接抛出异常
             raise Exception('The list is an empty list')
-        while cur_idx < idx-1:
+        while cur_idx < idx-1:   # 5、遍历链表时要判断给定的索引是否大于链表的长度，
             cur = cur.next
-            if cur is None:
+            if cur is None:      # 如果大于则抛出异常信息；
                 raise Exception('list length less than index')
             cur_idx += 1
-        if idx == 0:   # 当删除第一个节点时
+        if idx == 0:             # 2、删除第一个节点时，移动head到删除节点的next指针指向的对象
             self.head = cur.next
             cur = cur.next
             return
-        if self.head is self.tail:   # 当只有一个节点的链表时
+        if self.head is self.tail: # 3、链表只有一个节点时，把head与tail都指向None即可
             self.head = None
             self.tail = None
             return
         cur.next = cur.next.next
-        if cur.next is None:  # 当删除的节点是链表最后一个节点时
+        if cur.next is None:     # 4、删除最后一个节点时，需要移动tail到上一个节点
             self.tail = cur
   
-    def size(self):
+    def size(self):              # size函数不接收参数，返回链表中节点的个数，要获得链表的节点个数，必定会遍历链表，
+                                 # 直到最后一个节点的next指针指向None时链表遍历完成，遍历时可以用一个累加器来计算节点的个数；
         current = self.head
         count = 0
         if current is None:
@@ -105,7 +107,8 @@ class LinkedList:
             current = current.next
         return count
   
-    def search(self, item):
+    def search(self, item):     # search函数接收一个item参数，表示查找节点中数据域的值。search函数遍历链表，每到一个节点把；
+                                # 当前节点的data值与item作比较，最糟糕的情况下会全遍历链表。如果查找到有些数据则返回True，否则返回False
         current = self.head
         found = False
         while current is not None and not found:
