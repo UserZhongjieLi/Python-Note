@@ -32,40 +32,45 @@ class LinkedList:
   
     def append(self, data):       # append方法表示增加元素到链表，这和insert方法不同，前者使新增加的元素成为链表中第一个节点，
                                   # 而后者是根据索引值来判断插入到链表的哪个位置
-        node = Node(data)	  #先将输入数据节点化，既然要新增加节点，首先把Node类实例化得到一个node对象(先将输入数据节点化再谈别的)
-				  #这里有两种情况需要考虑，一是链表是一个空链表时怎样append一个节点；二是当链表不是空链表时又怎样append
-				  #一个节点？
-        if self.head is None:	  #为True时，把链表的head和tail都指向了node
+        node = Node(data)	  # 先将输入数据节点化，既然要新增加节点，首先把Node类实例化得到一个node对象(先将输入数据节点化再谈别的)
+				  # 这里有两种情况需要考虑，一是链表是一个空链表时怎样append一个节点；二是当链表不是空链表时又怎样append
+				  # 一个节点？
+        if self.head is None:	  # 为True时，把链表的head和tail都指向了node
             self.head = node
             self.tail = node
-        else:			  #为False时说明此时的链表已经不是空的了，再增加一个节点时head已经指向了第一个节点，所以不为None
-				  #链表不为空，下面也就没有head的事了。增加第二个节点的操作需要分两步完成：
+        else:			  # 为False时说明此时的链表已经不是空的了，再增加一个节点时head已经指向了第一个节点，所以不为None
+				  # 链表不为空，下面也就没有head的事了。增加第二个节点的操作需要分两步完成：
             self.tail.next = node # 第一步：把上一个节点的next指针指向当前node
             self.tail = node	  # 第二步：把tail移动到当前node
   
     def iter(self):
-        if not self.head:	  #当是遍历一个空链表时，self.head为none，所以not none就是True，即为空则返回None，可省略；
+        if not self.head:	  # 当是遍历一个空链表时，self.head为none，所以not none就是True，即为空则返回None，可省略；
             return
-        cur = self.head		  #如果不是空链表就让一个局部变量cur指向head,
-        yield cur.data		  #并把head的data属性yield出来；
-        while cur.next:
+        cur = self.head		  # 如果不是空链表就让一个局部变量cur（current的缩写）指向head所指向的节点
+        yield cur.data		  # 并把该节点的data属性yield出来（实际上yield就是generate出来，但只能读取一次）；
+        while cur.next:		  # 再继续判断，看看next指向是不是None，如果不是，证明链表内还有元素，继续迭代；
             cur = cur.next
             yield cur.data
   
-    def insert(self, idx, value):
-        cur = self.head
-        cur_idx = 0
+    def insert(self, idx, value): # 参数是要插入的索引和数值
+        cur = self.head		  # 将链表的head节点赋给当前变量cur，包括这个节点的数值和指针，以便下面检查链表是否为空；
+        cur_idx = 0		  # head节点的索引是0，故使cur_idx = 0，以便下方对链表内的节点进行遍历；
         if cur is None:             # 判断是否是空链表
             raise Exception('The list is an empty list')
-        while cur_idx < idx-1:   # 遍历链表
-            cur = cur.next
-            if cur is None:   # 判断是不是最后一个元素
+        while cur_idx < idx-1:   # 遍历链表，从head节点开始，它的index是0，要在指定的索引位置插入一个节点，前提是需要找到
+				 # 这个位置，在链表中只有采用遍历的方式，具有O(n)的速度，最糟糕时会遍历链表的所有节点，而当
+				 # 找到插入点时，我们并不需要当前节点的信息，而是需要前一个节点的信息，所以代码中巧妙的使用
+				 了while cur_idx < idx-1:的方式，通过它的控制使cur这个变量能指向上个节点对象（要插入位置的上个节点）；
+            cur = cur.next       # 得到了要插入位置的上一个节点，也就是说cur代表上个节点；
+            if cur is None:      # 判断是不是最后一个元素，如果要插入节点的上一个节点是最后一个元素的话，说明超了
                 raise Exception('list length less than index')
             cur_idx += 1
-        node = Node(value)
-        node.next = cur.next
-        cur.next = node
-        if node.next is None:
+        node = Node(value)       # 将要插入的数值首先节点化
+        node.next = cur.next     # 第一步：将上一个节点的next所指向的节点赋给要插入的节点的next
+        cur.next = node          # 第二步：将要插入的节点赋给上一个节点的next，注意这里是把整个node赋给上个节点的next
+				 # 再次强调，next指向的是节点，节点对象既包含value，还包含指向下个节点的next
+        if node.next is None:    # 因为node.next是上一个节点的next所指向的节点，如果是None，则说明上个节点已经是最后一个节点了。
+				 # 此时插入的节点便成为了新的tail节点，故别忘了将该节点赋给tail。
             self.tail = node
   
     def remove(self, idx):
