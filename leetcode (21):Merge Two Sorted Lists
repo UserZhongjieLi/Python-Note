@@ -10,6 +10,65 @@ output: 1->2->3->4->8
 
 考查知识点：首先我们可以从题目中观察出来，此题主要考察链表(Linked list)的相关知识。
 
+下面写一个自己能独立在jupyter中运行的程序，不借助leetcode接口
+###### 再次强调，链表中的元素为节点，节点有两个属性，一个是val，另一个就是指针，指向下一个节点####
+######  定义节点类  ##############
+class ListNode:
+    def __init__(self,x):
+        self.val=x
+        self.next=None
+
+######  将列表转化成链表  ##############
+def listToNode(l):
+    head=None  # 链表必须有head和tail两个节点，都初始化为None；
+    tail=None
+    for i in l:# 开始遍历传入的列表（数组）中的元素；
+        node=ListNode(i) # 将其转化成节点；
+        if head is None: #  如果head节点是空的，就把第一个节点元素赋给它，后面就没他什么事了；
+            head=node
+        if tail is not None: # head节点已确定，剩下的就是折腾tail节点，进来一个新节点tail就要变成它
+                             # 只要还在进新节点，tail就一直在动；
+            tail.next=node # 虽然这里next前面是tail，实际上它的做用就是不断更新当前的节点
+                           # 实际上是node.next=node(这个是新的node，前面的是旧的node)，这样把节点一个个穿起来；
+        tail=node # 这个语句的作用是给出tail节点的，每次都将新进入的node作为最新的tail节点，
+                  # 因为tail始终代表最后一个节点；
+    return head   # 最终再返回head节点就行了，这样就能访问链表中的节点了；
+
+######  定义节点打印函数  ##############
+def printNode(node):
+    while node is not None:
+        print(node.val)
+        node = node.next # 更新当前节点，以便访问下一个节点；
+        
+def mergeTwoLists(l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        dummy = node = ListNode(None) # dummy是一个缓存器，用dummy.next来访问head节点，因为这是
+                                      # 初始化节点对象的，node表示新链表的当前节点；
+        while l1 and l2: # 从这里也可以看出其实链表的展现形式是它当前的指向的一个节点，当然有可能为None
+                         # 如果两者目前指向的节点都不是空的，那就可以比较一下数值大小了
+            if l1.val < l2.val:
+                node.next = l1 # 将l1当前所指向的节点赋给新建链表当前节点node的下一个节点；
+                l1 = l1.next   # 由于l1当前所指向的节点已经使用，所以更新链表l1，使其指向下一个节点
+            else:
+                node.next = l2 # 否则，原理同上；
+                l2 = l2.next
+            node = node.next   # 走完一轮，更新当前节点为下一节点，进行新一轮比较；
+        node.next = l1 or l2   # 当两者有一个链表已经访问完指向None的时候，当前节点的下一个节点只需指向那个
+                               # 那个指向非空节点的额链表即可，如果都是指向None那就都可以了；
+        return dummy.next      # 实际上就是返回新链表的head节点；
+if __name__=="__main__":
+    l1=listToNode([1,2,4,6,8])
+    l2=listToNode([3,9])
+    printNode(mergeTwoLists(l1,l2))
+
+
+
+
+
 思路
 
 head指向输入两个链表中头节点较小值，作为新链表的头部
