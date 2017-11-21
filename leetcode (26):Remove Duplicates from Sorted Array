@@ -8,7 +8,11 @@ Given nums = [1,1,2],
 
 Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.
 It doesn't matter what you leave beyond the new length.
+很简单的一道题，注意要求不能使用额外空间，并且使nums的所有的不同值排在最前面。对于nums={1，1，2，3，3，4，5} ，
+要求返回5，并且nums的前5位分别为不重复的值。
 
+分析：1)它是一个已经排好序的数组(在python中称为列表)，这个条件非常重要；
+     2)既然要返回个数，那么就需要一个计数变量；
 解决方案：
 class Solution:
     def removeDuplicates(self, nums):
@@ -16,12 +20,13 @@ class Solution:
         :type nums: List[int]
         :rtype: int
         """
-        if not nums:
+        if not nums: # 判断是不是空的，是空的直接返回0；
             return 0
 
-        newTail = 0
+        newTail = 0  # newtail，即新的尾部的意思，这里的尾部指的是不重复元素的最后一个，当有新成员进入时他就要更新了；
 
-        for i in range(1, len(nums)):
+        for i in range(1, len(nums)): # 既然不能使用额外的空间，那就只能使用for循环遍历其内部所有元素了，而且发现没有
+                                      # 这里也是使用下标对数组元素进行访问，而不是直接取出元素，这种做法已经用过多次；
             if nums[i] != nums[newTail]:
                 newTail += 1
                 nums[newTail] = nums[i]
@@ -29,4 +34,9 @@ class Solution:
         return newTail + 1     
 O(n)
 
+
 要解决的问题：怎么判断一个算法的时间复杂度和空间复杂度？
+
+学到的知识点：
+一、在条件判断的表达式中要灵活运用is 、not、and、or，他们非常方便 ，另外还有in，用来判断数据中是否有这个元素，非常方便；
+二、
