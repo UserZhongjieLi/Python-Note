@@ -10,7 +10,7 @@ Given nums = [3,2,2,3], val = 3,
 
 Your function should return length = 2, with the first two elements of nums being 2.
 
-大牛的解决方案如下：
+大牛1的解决方案如下（Runtime: 55ms）：
 Simple Python O(n) two pointer in place solution
 Starting from the left every time we find a value that is the target value we swap it out with an item starting from the right.
 We decrement end each time as we know that the final item is the target value and only increment start once we know the value is ok.
@@ -24,3 +24,47 @@ Once start reaches end we know all items after that point are the target value s
         else:
             start +=1
     return start
+ 
+
+大牛2的解决方案如下(Runtime: 65 ms)：
+def removeElement(nums, val):
+    while val in nums:
+        A.remove(val)  # 利用了列表的remove方法，语句简单，但是可能稍微有点耗时；
+    return len(nums)
+
+
+if __name__=="__main__":
+    print(removeElement([1,2,3,4,1],1))
+
+
+我的解决方案(可在jupyter中直接运行)（Runtime: 55ms）：
+
+思路：我的思路是和leetcode(26)一样，还是对数组本身进行操作，这样不用使用额外的空间。
+
+def removeElement(nums, val):
+    index = 0  # 初始化索引，为了方便替换nums中的元素；
+    for i in range(len(nums)):  # 这里也一样，采用下标对元素进行访问；
+        if nums[i] != val:
+            nums[index] = nums[i]
+            index+=1
+    print(index)  # 打印一下index，看有没有发生变化，可以去掉；
+    nums = nums[0:index] # 这里我采用了列表中切片的技巧，注意这个切片是在函数内部做的，切片是不改变原来的nums的，改变的是前index个
+    print(nums)   # 注意：此处的nums是该函数内部的nums；
+    return len(nums)
+
+nums = [3,2,2,3]
+val = 3
+print(removeElement(nums, val))
+print(nums)
+输出如下：
+2       # 这个2打印的就是函数内部的index，它已经发生变化，说明运行正常；
+[2, 2]  # 这个打印的是nums对nums本身做的一个切片操作，注意，这个切片操作仅在这个函数内部起作用，出了这个函数切片操作就不起作用了；
+2
+[2, 2, 2, 3] # 我们从外部再次打印nums，发现只有前两个数据变了，这是因为在函数中，前两个指针指向的元素被更换了，这个操作改变了nums的
+             # 数据结构，所以nums前两个元素发生变化，而切片操作是不会改变nums的数据结构的，函数内部只截取了前两个进行print，但是如果
+             # 出了函数体，nums实际上还是没切片之前的，这就是函数内部的变量作用域的原因。
+ 知识点：
+ 一、考察的就是数组中某一类元素的remove；
+ 二、注意局部变量的作用域，它只在函数体内部起作用，函数体外就不一定有他什么事了。之所以说不一定是因为看看函数体内部的操作会不会改变
+  该变量的数据结构，如果改变了，那么在外部的同一变量也会发生变化，前提是变量名相同。当然如果某一变量只在函数体内部出现的话，那么外部
+  是无法调用（无法print）的，会报出此变量没有定义的错误。
