@@ -11,6 +11,7 @@ Given nums = [3,2,2,3], val = 3,
 Your function should return length = 2, with the first two elements of nums being 2.
 
 大牛的解决方案如下：
+Simple Python O(n) two pointer in place solution
 Starting from the left every time we find a value that is the target value we swap it out with an item starting from the right.
 We decrement end each time as we know that the final item is the target value and only increment start once we know the value is ok.
 Once start reaches end we know all items after that point are the target value so we can stop there.
