@@ -11,7 +11,32 @@ Example 2:
 
 Input: haystack = "aaaaa", needle = "bba"
 Output: -1
-解决方案1：
+
+
+下面是我的解决方案：(Runtime: 89 ms)
+def strStr(haystack, needle):
+    """
+    :type haystack: str
+    :type needle: str
+    :rtype: int
+    """    
+    if needle:  # 如果needle是非空的，再进行下面的判断，否则直接返回0
+        for i in range(len(haystack)): # 使用下标遍历haystack中的数据；
+            if haystack[i] == needle[0]: # 先在haystack定位与needle第一个字母相同的index，
+                if haystack[i:i+len(needle)] == needle:# 然后以这个元素为起点做切片，长度等于needle，如果两者相等，那么返回该元素的index
+                    return i
+        return -1
+    else:
+        return 0
+# haystack = "hello"
+# needle = "ll"
+# haystack = "aaaaa"
+# needle = "bba"
+haystack = ""
+needle = "ll"
+strStr(haystack, needle)
+
+大牛的解决方案：
 class Solution:
     def strStr(self, haystack, needle):
         """
@@ -19,7 +44,24 @@ class Solution:
         :type needle: str
         :rtype: int
         """
-        for i in range(len(haystack) - len(needle)+1):
-            if haystack[i:i+len(needle)] == needle:
+        for i in range(len(haystack) - len(needle)+1):  # 大体思路和我一样，只不过他没有进行定位，而是直接进行判断，这一点我做的
+                                                        # 确实有点啰嗦了，发现一切能缩减时间的操作；
+            if haystack[i:i+len(needle)] == needle:     # 也是直接采用切片操作；
                 return i
         return -1
+        
+        
+知识点：
+一、这里有一个非常重要的问题，看下面的代码：
+str = "123"
+print(str[i:i])
+print("")
+发现输出结果都为空；再看下面的语句：
+string = "123"
+print(string[0:0] == "" )
+print(type(""))
+输出：True  
+<class 'str'>
+    也就是说即使没有在屏幕上输出任何东西，但是它其实是存在的，只不过是一个空的字符串，但是它的类型还是'str'，所以当needle=""的时候输出
+为0是有道理的，而我的方式却有点凑数的嫌疑，为了让needle=""时输出0而输出0，实际上是有深层次的逻辑在内的。所以，在编程的时候一定要想的全面
+一些，尤其是那些特殊情况，你的程序能否兼容很重要。
