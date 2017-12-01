@@ -2,13 +2,19 @@
 
 You may assume the integer do not contain any leading zero, except the number 0 itself.
 
-The digits are stored such that the most significant digit is at the head of the list.
+The digits are stored such that the most significant digit is at the head of the list(即将最高位数字放在列表头部).
 
-解决方案：可在jupyter中直接运行
+
+考察的知识点：我认为此题目考察了
+    1)整数与字符串以及列表之间的转换知识;
+    2)列表解析的使用;
+    3)列表内元素的逆序输出。
+
+解决方案一：可在jupyter中直接运行(Runtime: 75 ms)
 
 def plusOne(digits):
     flag,res=1,[]
-    for i in digits[::-1]:
+    for i in digits[::-1]:          # 这里使用了digits[::-1],即逆序输出digits列表中的数字；
         t=i+flag
         i,flag=(0,1) if t==10 else (t,0)
         res.insert(0,i)
@@ -39,11 +45,15 @@ class Solution:
         """
         num = 0
         for i in range(len(digits)):
-            num += digits[i] * pow(10, (len(digits)-1-i))
-        return [int(i) for i in str(num+1)]
+            num += digits[i] * pow(10, (len(digits)-1-i))   # 思想是将列表表示的数字先换算成整数，然后再执行+1运算；
+        return [int(i) for i in str(num+1)]  #即将列表中的每个数字＋1后字符串化，以便取出整数的每一个数字，然后再强制转化成整型，也是
+                                             # 利用了“曲线救国”的思想，从而将＋1后的整数以列表的形式输出；
         
 explanation：We're given a list of digits, and the idea here is to convert that list to an integer, num. 
     So each digit is multiplied by the proper place value and added to num. For example, if digits = [3, 8, 2, 5] 
     then on the first iteration 3 is multiplied by 10 to the power of 4-1-0 = 3, so this results in 3000, which is added to num.
     Then 8 is multiplied by 10^2 and added to num, and so on.
     The last step is to add 1 to num, convert it to a list and return that list.
+学到的知识点：
+一、注意，要想返回的结果是以列表的形式存在的，则“列表解析”可能是其中的一个解决方案，因为它的作用是可以取出元素代入表达式运算之后，最后以整个
+    列表的形式返回的；
