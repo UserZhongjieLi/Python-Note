@@ -54,6 +54,29 @@ explanation：We're given a list of digits, and the idea here is to convert that
     then on the first iteration 3 is multiplied by 10 to the power of 4-1-0 = 3, so this results in 3000, which is added to num.
     Then 8 is multiplied by 10^2 and added to num, and so on.
     The last step is to add 1 to num, convert it to a list and return that list.
+
+我的解决方案(Runtime: 59 ms)可在jupyter中直接运行：
+def plusOne(digits):
+    value = 0
+    digits_reverse = digits[::-1]  # 先将原列表数据逆序输出，然后按照10进制的转换方法转换成整数；
+    for i in range(len(digits)):
+        value += digits_reverse[i]*pow(10,i)  # 正好从10的0次方开始叠加
+    return [int(j) for j in str(value+1)]     # 利用列表解析将+1后的整数以列表的形式输出；
+
+if __name__=="__main__":
+    print(plusOne([9,9,9,9]))
+    print(plusOne([1,9,9,9,9]))
+    print(plusOne([1,9,9,9,8]))
+    print(plusOne([1]))
+    print(plusOne([1,9,9,2,9]))
+输出：
+[1, 0, 0, 0, 0]
+[2, 0, 0, 0, 0]
+[1, 9, 9, 9, 9]
+[2]
+[1, 9, 9, 3, 0]    
+
 学到的知识点：
 一、注意，要想返回的结果是以列表的形式存在的，则“列表解析”可能是其中的一个解决方案，因为它的作用是可以取出元素代入表达式运算之后，最后以整个
     列表的形式返回的；
+二、再次提醒，列表解析最外面的是方括号，而不是圆括号，我这次就不小心写成了圆括号，导致报错。
