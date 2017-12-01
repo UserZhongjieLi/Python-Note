@@ -1,0 +1,32 @@
+题目：Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.
+
+You may assume the integer do not contain any leading zero, except the number 0 itself.
+
+The digits are stored such that the most significant digit is at the head of the list.
+
+解决方案：可在jupyter中直接运行
+
+def plusOne(digits):
+    flag,res=1,[]
+    for i in digits[::-1]:
+        t=i+flag
+        i,flag=(0,1) if t==10 else (t,0)
+        res.insert(0,i)
+    if flag:
+        res.insert(0,1)
+    return res
+
+
+if __name__=="__main__":
+    print(plusOne([9,9,9,9]))
+    print(plusOne([1,9,9,9,9]))
+    print(plusOne([1,9,9,9,8]))
+    print(plusOne([1]))
+    print(plusOne([1,9,9,2,9]))
+输出：
+[1, 0, 0, 0, 0]
+[2, 0, 0, 0, 0]
+[1, 9, 9, 9, 9]
+[2]
+[1, 9, 9, 3, 0]
+
