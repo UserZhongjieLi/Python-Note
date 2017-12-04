@@ -26,9 +26,9 @@ def listToNode(l):
 
 def printNode(node):
     while node is not None:
-        print node.val
+        print(node.val)
         node=node.next
-from structure.listnode import *
+
 
 def deleteDuplicates(head):
     flag=1<<32
@@ -46,7 +46,13 @@ def deleteDuplicates(head):
 if __name__=="__main__":
     _list=listToNode([1,1,2,3,3,3])
     printNode(deleteDuplicates(_list))
-解决方案二（）：
+    
+输出：
+1
+2
+3
+
+解决方案二（Runtime: 85 ms）：
 # Definition for singly-linked list.
 # class ListNode:
 #     def __init__(self, x):
